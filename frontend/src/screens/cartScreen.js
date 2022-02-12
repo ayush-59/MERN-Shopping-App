@@ -7,6 +7,7 @@ function CartScreen() {
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
   const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
   const shipping = 30.0;
   const tax = 35.0;
 
@@ -15,6 +16,14 @@ function CartScreen() {
   };
   const getCartSubTotal = () => {
     return cartItems.reduce((price, item) => item.price * item.qty + price, 0);
+  };
+
+  const handleCheckout = () => {
+    if (getCartCount() === 0) {
+      setAlertText("Cart Empty !");
+      setAlert(true);
+      setTimeout(() => setAlert(false), 1000);
+    }
   };
 
   return (
@@ -40,9 +49,7 @@ function CartScreen() {
                 />
               </svg>
             </div>
-            <p className="mr-2 text-base font-bold text-white">
-              Not Enough Items in Stock !
-            </p>
+            <p className="mr-2 text-base font-bold text-white">{alertText}</p>
           </div>
         </div>
       </div>
@@ -86,7 +93,11 @@ function CartScreen() {
                 <p>Your cart is Empty</p>
               ) : (
                 cartItems.map(item => (
-                  <CartItem item={item} setAlert={setAlert} />
+                  <CartItem
+                    item={item}
+                    setAlert={setAlert}
+                    setAlertText={setAlertText}
+                  />
                 ))
               )}
             </div>
@@ -110,13 +121,13 @@ function CartScreen() {
                       Shipping
                     </p>
                     <p className="text-base leading-none text-gray-800">
-                      ${cartItems.length === 0 ? 0.0 : shipping}
+                      ${getCartSubTotal() === 0 ? 0.0 : shipping}
                     </p>
                   </div>
                   <div className="flex items-center justify-between pt-5">
                     <p className="text-base leading-none text-gray-800">Tax</p>
                     <p className="text-base leading-none text-gray-800">
-                      ${cartItems.length === 0 ? 0.0 : tax}
+                      ${getCartSubTotal() === 0 ? 0.0 : tax}
                     </p>
                   </div>
                 </div>
@@ -127,7 +138,7 @@ function CartScreen() {
                     </p>
                     <p className="text-2xl font-bold leading-normal text-right text-gray-800">
                       $
-                      {cartItems.length === 0
+                      {getCartSubTotal() === 0
                         ? 0.0
                         : (getCartSubTotal() + shipping + tax).toFixed(2)}
                     </p>
@@ -136,6 +147,7 @@ function CartScreen() {
                     <button
                       type="submit"
                       className="focus:outline-none bg-gray-700 w-full transition duration-150 ease-in-out hover:bg-blue-400 rounded text-white px-8 py-3 text-lg leading-6"
+                      onClick={handleCheckout}
                     >
                       Checkout
                     </button>

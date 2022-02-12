@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState(false);
   const navigate = useNavigate();
   const [selectedImg, setSelectedImg] = useState(0);
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const ProductScreen = () => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(product._id, qty));
+    setAlertText("Item Added to Cart !");
     setAlert(true);
     setTimeout(() => setAlert(false), 1000);
   };
@@ -70,7 +72,7 @@ const ProductScreen = () => {
                   </svg>
                 </div>
                 <p className="mr-2 text-base font-bold text-white">
-                  Item Added to Cart !
+                  {alertText}
                 </p>
               </div>
             </div>
