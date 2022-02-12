@@ -43,7 +43,7 @@ function CartItem({ item, setAlert, setAlertText }) {
         </p>
         <p className="text-sm leading-3  py-4">Rate: ${item.price}</p>
         <p className="w-96 text-sm leading-3 ">
-          {item.countInStock > 0 ? <p>In Stock</p> : <p>Not In Stock</p>}
+          {item.countInStock > 0 ? "In Stock" : "Not In Stock"}
         </p>
         <p className="text-sm leading-3 mt-8">Select Quantity</p>
         <div className="flex items-center justify-between pt-2 pr-6">

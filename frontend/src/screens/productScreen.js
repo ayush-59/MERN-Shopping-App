@@ -2,13 +2,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { getProductDetails } from "../redux/actions/productActions";
 import { addToCart } from "../redux/actions/cartActions";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const [alert, setAlert] = useState(false);
   const [alertText, setAlertText] = useState(false);
-  const navigate = useNavigate();
+
   const [selectedImg, setSelectedImg] = useState(0);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -34,11 +34,11 @@ const ProductScreen = () => {
     : [];
   const rating = [...Array(5).keys()].map(x => {
     return x + 1 <= product.rating ? (
-      <i className="fa-solid fa-star"></i>
+      <i className="fa-solid fa-star" key={x + 1}></i>
     ) : x === Math.trunc(product.rating) ? (
-      <i className="fa-solid fa-star-half-stroke"></i>
+      <i className="fa-solid fa-star-half-stroke" key={x + 1}></i>
     ) : (
-      <i className="fa-regular fa-star"></i>
+      <i className="fa-regular fa-star" key={x + 1}></i>
     );
   });
 
@@ -190,8 +190,8 @@ const ProductScreen = () => {
           <div className="flex mt-28 justify-center items-center w-full">
             <div className="w-full sm:w-96 md:w-8/12 lg:w-full grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 lg:gap-28 sm:gap-x-6 sm:gap-y-12 gap-y-12 sm:mt-14 mt-10">
               <div>
-                <i class="text-6xl text-gray-700 fa-solid fa-0"></i>
-                <i class="ml-2 text-6xl text-gray-700 fa-solid fa-7"></i>
+                <i className="text-6xl text-gray-700 fa-solid fa-0"></i>
+                <i className="ml-2 text-6xl text-gray-700 fa-solid fa-7"></i>
                 <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">
                   7 Days Replacement
                 </p>
@@ -236,7 +236,7 @@ const ProductScreen = () => {
                 </p>
               </div>
               <div>
-                <i class="text-6xl text-gray-700 fa-solid fa-truck"></i>
+                <i className="text-6xl text-gray-700 fa-solid fa-truck"></i>
                 <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">
                   Instant Delivery
                 </p>
@@ -247,7 +247,7 @@ const ProductScreen = () => {
                 </p>
               </div>
               <div>
-                <i class="text-6xl text-gray-700 fa-solid fa-handshake-simple-slash"></i>
+                <i className="text-6xl text-gray-700 fa-solid fa-handshake-simple-slash"></i>
                 <p className="font-semibold text-xl leading-5 text-gray-800 lg:mt-10 mt-9">
                   No Contact Delivery
                 </p>

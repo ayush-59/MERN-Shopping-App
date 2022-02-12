@@ -8,7 +8,6 @@ import ProductScreen from "./screens/productScreen";
 import CartScreen from "./screens/cartScreen";
 import AboutScreen from "./screens/aboutScreen";
 import ContactScreen from "./screens/contactScreen";
-import CheckoutScreen from "./screens/checkoutScreen";
 import ErrorScreen from "./screens/errorScreen";
 import Navbar from "./components/navbar";
 import SideDrawer from "./components/sideDrawer";
@@ -46,7 +45,6 @@ function App() {
         <Route exact path="/cart" element={<CartScreen />} />
         <Route exact path="/about" element={<AboutScreen />} />
         <Route exact path="/contact" element={<ContactScreen />} />
-        <Route exact path="/checkout" element={<CheckoutScreen />} />
         <Route path="*" element={<ErrorScreen />} />
       </Routes>
       <Footer />

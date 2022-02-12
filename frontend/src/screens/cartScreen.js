@@ -90,10 +90,13 @@ function CartScreen() {
               </div>
 
               {cartItems.length === 0 ? (
-                <p>Your cart is Empty</p>
+                <p className="text-3xl font-bold mt-28 text-center">
+                  Your cart is Empty
+                </p>
               ) : (
                 cartItems.map(item => (
                   <CartItem
+                    key={item.id}
                     item={item}
                     setAlert={setAlert}
                     setAlertText={setAlertText}
