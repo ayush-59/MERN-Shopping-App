@@ -2,7 +2,7 @@ import { addToCart, removeFromCart } from "../redux/actions/cartActions";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-function CartItem({ item, setAlert, setAlertText }) {
+function CartItem({ item, displayAlert }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
@@ -10,14 +10,14 @@ function CartItem({ item, setAlert, setAlertText }) {
   };
   const handleQuantity = qty => {
     if (item.countInStock < qty) {
-      setAlertText("Not Enough Items in Stock !");
-      setAlert(true);
-      setTimeout(() => setAlert(false), 1000);
+      displayAlert("Not Enough Items in Stock !", false);
     } else if (0 <= qty) dispatch(addToCart(item.id, qty));
   };
+
   const getItemTotal = () => {
     return item.price * item.qty;
   };
+
   return (
     <div className="md:flex items-center py-8 border-t border-gray-200">
       <div className="w-1/4">

@@ -4,10 +4,14 @@ import { getProductDetails } from "../redux/actions/productActions";
 import { addToCart } from "../redux/actions/cartActions";
 import { useParams } from "react-router-dom";
 
+import Alert from "../components/alert";
+
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
+
   const [alert, setAlert] = useState(false);
   const [alertText, setAlertText] = useState(false);
+  const [alertSuccess, setAlertSuccess] = useState(true);
 
   const [selectedImg, setSelectedImg] = useState(0);
   const dispatch = useDispatch();
@@ -22,16 +26,22 @@ const ProductScreen = () => {
     }
   }, []);
 
-  const addToCartHandler = () => {
-    dispatch(addToCart(product._id, qty));
-    setAlertText("Item Added to Cart !");
+  const displayAlert = (text, alertSuccess) => {
+    setAlertText(text);
+    setAlertSuccess(alertSuccess);
     setAlert(true);
     setTimeout(() => setAlert(false), 1000);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addToCart(product._id, qty));
+    displayAlert("Item Added to Cart !", true);
   };
 
   const images = product
     ? [product.imgUrl1, product.imgUrl2, product.imgUrl3]
     : [];
+
   const rating = [...Array(5).keys()].map(x => {
     return x + 1 <= product.rating ? (
       <i className="fa-solid fa-star" key={x + 1}></i>
@@ -51,31 +61,7 @@ const ProductScreen = () => {
       ) : (
         <>
           <div className="flex items-center justify-center text-center px-4 sm:px-0">
-            <div
-              id="alert"
-              className={`fixed z-50 bg-green-500 shadow rounded-lg  md:flex justify-between items-center top-0 mt-12 mb-8 py-4 px-4 -translate-y-full scale-0 transition ease-in-out delay-150 ${alert &&
-                "translate-y-0 scale-100"} `}
-            >
-              <div className="flex">
-                <div className="mr-2 mt-0.5 sm:mt-0 text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width={22}
-                    height={22}
-                    fill="currentColor"
-                  >
-                    <path
-                      className="heroicon-ui"
-                      d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 9a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1zm0 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
-                    />
-                  </svg>
-                </div>
-                <p className="mr-2 text-base font-bold text-white">
-                  {alertText}
-                </p>
-              </div>
-            </div>
+            <Alert text={alertText} alert={alert} alertSuccess={alertSuccess} />
           </div>
           <div className="flex justify-center items-center lg:flex-row flex-col gap-8">
             {/* <!-- Description Div --> */}
@@ -113,7 +99,7 @@ const ProductScreen = () => {
                   <div className="flex">
                     <span
                       onClick={() => {
-                        if (qty > 0) setQty(prev => prev - 1);
+                        if (qty > 1) setQty(prev => prev - 1);
                       }}
                       className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1"
                     >
@@ -129,7 +115,9 @@ const ProductScreen = () => {
                     />
                     <span
                       onClick={() => {
-                        setQty(prev => prev + 1);
+                        if (qty === product.countInStock) {
+                          displayAlert("Not Enough Items in Stock !", false);
+                        } else setQty(prev => prev + 1);
                       }}
                       className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 "
                     >
