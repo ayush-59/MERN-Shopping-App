@@ -2,14 +2,17 @@ import { addToCart, removeFromCart } from "../redux/actions/cartActions";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-function CartItem({ item }) {
+function CartItem({ item, setAlert }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
     dispatch(removeFromCart(item.id, item.qty));
   };
   const handleQuantity = qty => {
-    dispatch(addToCart(item.id, qty));
+    if (item.countInStock < qty) {
+      setAlert(true);
+      setTimeout(() => setAlert(false), 1000);
+    } else if (0 <= qty) dispatch(addToCart(item.id, qty));
   };
   const getItemTotal = () => {
     return item.price * item.qty;
@@ -90,7 +93,7 @@ function CartItem({ item }) {
           </div>
           <div>
             <p className="text-2xl items-start ml-4 font-black leading-none text-gray-800">
-              ${getItemTotal()}
+              ${getItemTotal().toFixed(2)}
             </p>
           </div>
         </div>

@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import CartItem from "../components/cartItem";
 
 function CartScreen() {
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+  const [alert, setAlert] = useState(false);
   const shipping = 30.0;
   const tax = 35.0;
 
@@ -17,8 +19,35 @@ function CartScreen() {
 
   return (
     <div>
+      <div className="flex items-center justify-center text-center px-4 sm:px-0 ">
+        <div
+          id="alert"
+          className={`fixed z-50 bg-red-500 shadow rounded-lg  md:flex justify-between items-center top-0 mt-12 mb-8 py-4 px-4 -translate-y-full scale-0 transition ease-in-out delay-150 ${alert &&
+            "translate-y-0 scale-100"} `}
+        >
+          <div className="flex">
+            <div className="mr-2 mt-0.5 sm:mt-0 text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={22}
+                height={22}
+                fill="currentColor"
+              >
+                <path
+                  className="heroicon-ui"
+                  d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 9a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1zm0 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                />
+              </svg>
+            </div>
+            <p className="mr-2 text-base font-bold text-white">
+              Not Enough Items in Stock !
+            </p>
+          </div>
+        </div>
+      </div>
       <div
-        className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden"
+        className="z-30 w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden"
         id="chec-div"
       >
         <div
@@ -56,7 +85,9 @@ function CartScreen() {
               {cartItems.length === 0 ? (
                 <p>Your cart is Empty</p>
               ) : (
-                cartItems.map(item => <CartItem item={item} />)
+                cartItems.map(item => (
+                  <CartItem item={item} setAlert={setAlert} />
+                ))
               )}
             </div>
 
@@ -71,7 +102,7 @@ function CartScreen() {
                       Subtotal
                     </p>
                     <p className="text-base leading-none text-gray-800">
-                      ${getCartSubTotal()}
+                      ${getCartSubTotal().toFixed(2)}
                     </p>
                   </div>
                   <div className="flex items-center justify-between pt-5">
