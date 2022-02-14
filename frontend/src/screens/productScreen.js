@@ -42,7 +42,7 @@ const ProductScreen = () => {
     ? [product.imgUrl1, product.imgUrl2, product.imgUrl3]
     : [];
 
-  const rating = [...Array(5).keys()].map(x => {
+  const rating = !product ? [] : [...Array(5).keys()].map(x => {
     return x + 1 <= product.rating ? (
       <i className="fa-solid fa-star" key={x + 1}></i>
     ) : x === Math.trunc(product.rating) ? (
